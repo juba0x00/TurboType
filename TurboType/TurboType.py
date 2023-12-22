@@ -99,3 +99,47 @@ def process_input() -> str:
                 user_input = "" 
                 return "enter"
     return ''
+
+def select_rand_word() -> None:
+    word = choice(words).rstrip("\n") # random.choice(words: list)
+    WORDS.append(word) # add the word to WORDS list
+    WORDS_ON_SCREEN.append(WordOnScreen(word)) # create a WordOnScreen object and add it to WORDS_ON_SCREEN list
+        
+
+def show_text(char: str) -> None:
+    global user_input
+    text_sufrace = BASIC_FONT.render(user_input,ANTI_ALIASING,WHITE)
+    text_rectangle = text_sufrace.get_rect()
+    text_rectangle.bottomleft = (WINDOW_WIDTH / 50,WINDOW_HEIGHT / 10 * 9.8)
+    pygame.draw.rect(game_surface, BG_COLOR, text_rectangle) # remove previous text
+    game_surface.blit(text_sufrace,text_rectangle) # draw the text on the screen
+
+    if char == "backspace":
+        remove_text = text_rectangle
+        remove_text[2] = WINDOW_WIDTH / 1.5
+        pygame.draw.rect(game_surface, BG_COLOR, remove_text)
+        game_surface.blit(text_sufrace,text_rectangle)
+
+    if char == "enter":
+        remove_text = text_rectangle
+        remove_text[2] = WINDOW_WIDTH / 1.5
+        pygame.draw.rect(game_surface, BG_COLOR, remove_text)
+
+    pygame.display.update() # update the display Surface to the screen
+
+
+def draw_ui():
+    
+    def draw_line() -> None:
+        left_point = (0,WINDOW_HEIGHT/10 * 9.2) # 9.2/10 of the screen
+        right_point = (WINDOW_WIDTH,WINDOW_HEIGHT/10 * 9.2)
+        pygame.draw.line(game_surface,GREEN,left_point,right_point)
+        
+    def draw_score_label() -> None:
+        text_sufrace = BASIC_FONT.render("Score:",ANTI_ALIASING,WHITE)
+        text_rectangle = text_sufrace.get_rect()
+        text_rectangle.bottomleft = (WINDOW_WIDTH / 1.4,WINDOW_HEIGHT / 10 * 9.8)
+        game_surface.blit(text_sufrace,text_rectangle)
+    
+    draw_line()
+    draw_score_label()
