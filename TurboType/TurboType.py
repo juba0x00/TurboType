@@ -143,7 +143,66 @@ def draw_ui():
     
     draw_line()
     draw_score_label()
+    
+def refresh_score() -> None:
+    text_sufrace = BASIC_FONT.render(str(current_score),ANTI_ALIASING,WHITE)
+    text_rectangle = text_sufrace.get_rect()
+    text_rectangle.bottomleft = (WINDOW_WIDTH / 1.18,WINDOW_HEIGHT / 10 * 9.8)
+    pygame.draw.rect(game_surface, BG_COLOR, text_rectangle) # remove previous score
+    game_surface.blit(text_sufrace,text_rectangle) # draw new score
 
+def redraw_life_count() -> None:
+    global life_count
+    position = [round(WINDOW_WIDTH / 1.1),round(WINDOW_HEIGHT / 10 * 9.53)]
+    rectangle = pygame.Rect(round(WINDOW_WIDTH / 1.14),round(WINDOW_HEIGHT / 10 * 9.3),WINDOW_WIDTH,WINDOW_HEIGHT)
+    game_surface.fill(BG_COLOR,rectangle)
+    for i in range (life_count):
+        pygame.draw.circle(game_surface,RED, position, 5)
+        position[0] += 15
+
+def game_over() -> None:
+    global WORDS, WORDS_ON_SCREEN, life_count
+    game_surface.fill(BG_COLOR) # Fill Surface object with a solid color
+    draw_start_screen("Game Over")
+    pygame.display.update()
+    WORDS = []
+    WORDS_ON_SCREEN = []
+    life_count = 3
+    while True:
+        if process_input() == "enter":
+            life_count = 3
+            main()
+
+def draw_start_screen(text: str) -> None:
+    global current_score
+    text_sufrace = BASIC_FONT.render(text,ANTI_ALIASING,GREEN)
+    text_rectangle = text_sufrace.get_rect()
+    text_rectangle.center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - 30)
+    game_surface.blit(text_sufrace,text_rectangle)
+
+    if text == "Start":
+        text_sufrace = BASIC_FONT.render("To proceed, press enter!",ANTI_ALIASING,GREEN)
+        text_rectangle = text_sufrace.get_rect()
+        text_rectangle.center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        game_surface.blit(text_sufrace,text_rectangle)
+    else:
+        text_sufrace = BASIC_FONT.render(text,ANTI_ALIASING,RED)
+        text_rectangle = text_sufrace.get_rect()
+        text_rectangle.center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2-30)
+        game_surface.blit(text_sufrace,text_rectangle)
+        text_sufrace = BASIC_FONT.render("To restart, press enter!",ANTI_ALIASING,GREEN)
+        text_rectangle = text_sufrace.get_rect()
+        text_rectangle.center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        game_surface.blit(text_sufrace,text_rectangle)
+        text_sufrace = BASIC_FONT.render("Score: "+str(current_score),ANTI_ALIASING,GREEN)
+        text_rectangle = text_sufrace.get_rect()
+        text_rectangle.center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2+30)
+        game_surface.blit(text_sufrace,text_rectangle)
+        current_score = 0
+
+    pygame.display.update()
+    
+    
 def update_difficulty() -> None:
     global current_score, DIFFICULTY, DELAY, WORD_MOVE_TIME
     if DIFFICULTY <= 1.25:
