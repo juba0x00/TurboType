@@ -12,7 +12,7 @@ on:
       - '!CI-**'
     paths:
         - 'TurboType/**'
-        - '.github/workflows'
+        - '.github/workflows/**'
   pull_request:
     branches:
       - 'main'
@@ -21,7 +21,7 @@ on:
       - '!CI-**'
     paths:
         - 'TurboType/**'
-        - '.github/workflows'
+        - '.github/workflows/**'
 
 jobs:
 
