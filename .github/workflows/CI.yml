@@ -197,7 +197,6 @@ jobs:
   
   pypi:
     if: contains(github.event.head_commit.message, '[deploy]') && github.actor != 'dependabot[bot]'
-    if: github.actor!= 'dependabot[bot]'
     defaults:
       run:
         shell: bash
