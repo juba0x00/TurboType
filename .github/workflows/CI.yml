@@ -2,6 +2,7 @@ name: Tubro-CI
 
 on: 
   workflow_dispatch:
+
   
   push: 
     branches:
@@ -11,7 +12,7 @@ on:
       - '!CI-**'
     paths:
         - 'TurboType/**'
-        - '.github/workflows'
+        - '.github/workflows/**'
   pull_request:
     branches:
       - 'main'
@@ -20,7 +21,7 @@ on:
       - '!CI-**'
     paths:
         - 'TurboType/**'
-        - '.github/workflows'
+        - '.github/workflows/**'
 
 jobs:
 
