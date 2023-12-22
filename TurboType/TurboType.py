@@ -143,3 +143,83 @@ def draw_ui():
     
     draw_line()
     draw_score_label()
+
+def update_difficulty() -> None:
+    global current_score, DIFFICULTY, DELAY, WORD_MOVE_TIME
+    if DIFFICULTY <= 1.25:
+        pass
+
+    else:
+        DIFFICULTY = 3 - current_score / 20 # increase difficulty by 0.05 every 20 points
+        DELAY = int(FPS * DIFFICULTY)
+
+    if current_score >= 75:
+        WORD_MOVE_TIME = FPS * 0.9 # increase word move time by 0.1 second every 75 points
+
+    if current_score >= 100:
+        WORD_MOVE_TIME = FPS * 0.8 # increase word move time by 0.1 second every 100 points
+
+
+class WordOnScreen: # class for words displayed on the screen
+
+    def __init__(self: object, word: str) -> None:
+        global name, position, WORDS_POSITION
+        self.name = word
+        self.x_axis = 0
+        self.y_axis = self.get_random_position # get a random  position respecting the grid
+        while self.y_axis in WORDS_POSITION:
+            self.y_axis = self.get_random_position # get another random position & make sure the word is not displayed on the same line as another word
+        WORDS_POSITION.pop() 
+        WORDS_POSITION.insert(0,self.y_axis)
+
+    def word_move(self: object) -> None:
+        self.x_axis += WINDOW_WIDTH / 64
+
+    @property
+    def get_random_position(self: object) -> int:
+        return round(randint(1,WINDOW_HEIGHT-60)/23)*23
+    
+    
+    def get_colored_text_surface(self, text_rectangle: pygame.Rect) -> pygame.Surface:
+        if text_rectangle.center[0] < 1/3 * WINDOW_WIDTH: #? if the word is on the first third of the screen
+            text_sufrace = BASIC_FONT.render(self.name,ANTI_ALIASING,GREEN) # render green text
+        
+        if text_rectangle.center[0] > 1/3 * WINDOW_WIDTH: #? if the word is on the second third of the screen
+            text_sufrace = BASIC_FONT.render(self.name,ANTI_ALIASING,YELLOW) # render yellow text
+        
+        if text_rectangle.center[0] > 2/3 * WINDOW_WIDTH: #? if the word is on the last third of the screen
+            text_sufrace = BASIC_FONT.render(self.name,ANTI_ALIASING,RED) # render red text
+        
+        return text_sufrace
+    
+    def handle_life_count(self, text_rectangle: pygame.Rect) -> None:
+        global life_count
+        if text_rectangle.right >= WINDOW_WIDTH:
+            life_count -= 1 # decrease life count
+            self.word_remove()
+            if life_count == 0: 
+                game_over()
+
+    
+    def word_draw(self: object) -> None:
+        text_sufrace = BASIC_FONT.render(self.name,ANTI_ALIASING,WHITE)
+        text_rectangle = text_sufrace.get_rect()
+        delete_rect = text_sufrace.get_rect()
+        text_rectangle.bottomleft = tuple([self.x_axis,self.y_axis])
+        delete_rect.bottomleft = tuple([self.x_axis,self.y_axis])
+        delete_rect.left -= WINDOW_WIDTH / 64
+        pygame.draw.rect(game_surface, BG_COLOR, delete_rect)
+
+        game_surface.blit(self.get_colored_text_surface(text_rectangle),text_rectangle)
+        self.handle_life_count(text_rectangle)  
+
+            
+    def word_remove(self: object) -> None:
+        WORDS_ON_SCREEN.remove(self)
+        text_sufrace = BASIC_FONT.render(self.name,ANTI_ALIASING,WHITE)
+        delete_rect = text_sufrace.get_rect()
+        delete_rect.bottomleft = tuple([self.x_axis,self.y_axis])
+        pygame.draw.rect(game_surface, BG_COLOR, delete_rect)
+
+if __name__ == '__main__':
+    main()
