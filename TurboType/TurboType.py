@@ -1,6 +1,5 @@
 import pygame
 from random import randint, choice
-from pathlib import Path
 from os import path
 
 FPS = 60 # Frames Per Second (FPS)
@@ -21,8 +20,8 @@ YELLOW = (255, 255, 0)
 RED = (255, 0, 0)
 life_count = 3
 ANTI_ALIASING = True
-FONT_FILE = Path(path.dirname(__file__)) / 'data' / 'font.ttf'
-WORDS_FILE = Path(path.dirname(__file__)) / 'data' / 'words.txt'
+FONT_FILE = path.join(path.dirname(__file__), 'data', 'font.ttf')
+WORDS_FILE = path.join(path.dirname(__file__), 'data', 'words.txt')
 
 
 def main() -> None:
