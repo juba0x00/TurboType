@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
         
 setup(
     name="TurboType",
-    version="22.0",
+    version="22.0-dev",
     author="1337",
     description="A Game for Typing challenge",
     packages=find_packages(),
