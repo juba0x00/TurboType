@@ -2,7 +2,6 @@ import pygame
 from random import randint, choice
 from os import path
 
-
 FPS = 60 # Frames Per Second (FPS)
 WINDOW_WIDTH = 700
 WINDOW_HEIGHT = 500
