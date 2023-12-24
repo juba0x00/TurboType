@@ -1,4 +1,13 @@
 # Turbo Type
+# Installation
+- install
+```bash
+pip3 install TurboType
+```
+- run
+```bash
+TurboType
+```
 # Team Number: 1337
 # Team Members: 
 
